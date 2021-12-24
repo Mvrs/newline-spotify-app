@@ -9,15 +9,26 @@ import { accessToken, getCurrentUserProfile, logout } from "./spotify";
 // import { catchError } from "./utilites";
 import styled from 'styled-components/macro'
 import { GlobalStyle } from "./styles";
+import { Login, Profile, TopArtists, TopTracks, Playlists, Playlist } from "./pages";
 
-const StyledLoginButton = styled.a`
-  background-color: var(--green);
+
+const StyledLogoutButton = styled.button`
+  position: absolute;
+  top: var(--spacing-sm);
+  right: var(--spacing-md);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background-color: rgba(0,0,0,.7);
   color: var(--white);
-  padding: 10px 20px;
-  margin: 20px;
-  border-radius: 30px;
-  display: inline-block;
+  font-size: var(--fz-sm);
+  font-weight: 700;
+  border-radius: var(--border-radius-pill);
+  z-index: 10;
+  @media (min-width: 768px) {
+    right: var(--spacing-lg);
+  }
 `;
+
+
 // Scroll to top of page when changing routes
 // https://reactrouter.com/web/guides/scroll-restoration/scroll-to-top
 function ScrollToTop() {
@@ -61,35 +72,22 @@ function App() {
       <GlobalStyle />
       <header className="App-header">
         {!token ? (
-          <StyledLoginButton className="App-link" href="http://localhost:8888/login">
-            Login in to Spotify
-          </StyledLoginButton>
+          <Login />
         ) : (
           <BrowserRouter>
             <ScrollToTop />
-            <Routes>
-              <Route path="/" index element={
-                <div>
-                  <button onClick={logout}>Log Out</button>
-
-                  {profile && (
-                    <div>
-                      <h1>{profile.display_name}</h1>
-                      <p>{profile.followers.total} Followers</p>
-                      {profile.images.length && profile.images[0].url && (
-                        <img src={profile.images[0].url} alt="Avatar" />
-                      )}
-                    </div>
-                  )}
-                </div>}
-              />
-              <Route path="/top-artists" element={<h1>Top Artists</h1>} />
-              <Route path="/top-tracks" element={<h1>Top Tracks</h1>} />
-              <Route>
-                <Route path="/playlists" element={<h1>All Playlists</h1>} />
-                <Route path="/playlists/:id" element={<h1>Playlist</h1>} />
-              </Route>
-            </Routes>
+            <>
+              <StyledLogoutButton onClick={logout}>Log Out</StyledLogoutButton>
+              <Routes>
+                <Route path="/" index element={<Profile />} />
+                <Route path="/top-artists" element={<TopArtists />} />
+                <Route path="/top-tracks" element={<TopTracks />} />
+                <Route>
+                  <Route path="/playlists" element={<Playlists />} />
+                  <Route path="/playlists/:id" element={<Playlist />} />
+                </Route>
+              </Routes>
+            </>
           </BrowserRouter>
         )}
       </header>
