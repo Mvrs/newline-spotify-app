@@ -3,11 +3,20 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": "14.18.1"
+  },
+  "cacheDirectories": [
+    "node_modules",
+    "client/node_modules"
+  ],
   "scripts": {
     "start": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
     "server": "nodemon index.js",
     "client": "cd client && yarn start",
-    "postinstall": "cd client && yarn install"
+    "postinstall": "cd client && yarn install",
+    "build": "NODE_ENV=production cd client/ && yarn install && yarn build",
+    "start-server": "node index.js"
   },
   "keywords": [],
   "author": "",
